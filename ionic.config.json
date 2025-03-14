@@ -1,0 +1,7 @@
+{
+  "name": "ToDoCRUD",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
