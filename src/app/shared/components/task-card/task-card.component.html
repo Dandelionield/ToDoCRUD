@@ -1,0 +1,19 @@
+<ion-card class="task-card" [class.done]="task.done" (click)="navigateToDetail()">
+	
+	<ion-card-header>
+
+		<ion-card-title class="title" [class]="task.done ? 'strikethrough' : '' ">
+
+			{{ task.title }}
+
+		</ion-card-title>
+
+	</ion-card-header>
+
+	<ion-card-content class="content">
+
+		<p class="description">{{ task.description }}</p>
+
+	</ion-card-content>
+
+</ion-card>

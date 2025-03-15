@@ -6,11 +6,13 @@ import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { TaskCardComponent } from './components/task-card/task-card.component';
+
 @NgModule({
 
 	declarations: [
 
-		
+		TaskCardComponent
 
 	], imports: [
 
@@ -26,7 +28,8 @@ import { RouterModule } from '@angular/router';
 		FormsModule,
 		IonicModule,
 		ReactiveFormsModule,
-		RouterModule
+		RouterModule,
+		TaskCardComponent
 
 	], providers: [
 

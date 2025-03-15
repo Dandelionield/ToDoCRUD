@@ -1,0 +1,46 @@
+/* task-detail.page.scss */
+.editable-text {
+	cursor: pointer;
+	transition: all 0.2s ease;
+	padding: 8px;
+	border-radius: 4px;
+	
+	&:hover {
+		background: var(--ion-color-light);
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	}
+}
+
+.title-input {
+	font-size: 1.4rem;
+	font-weight: 600;
+	--padding-start: 0;
+}
+
+.description-label {
+	white-space: pre-wrap;
+	line-height: 1.5;
+}
+
+.date-display {
+	margin-left: 12px;
+	font-size: 0.9em;
+	color: var(--ion-color-medium);
+}
+
+ion-datetime {
+	width: 100%;
+	--background: var(--ion-color-light);
+	border-radius: 8px;
+}
+
+.validation-error {
+	display: block;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+ion-modal {
+	--width: 300px;
+	--height: 400px;
+}

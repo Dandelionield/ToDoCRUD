@@ -5,6 +5,8 @@ import { firebaseConfig } from './firebase/firebase.config';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
+import { TaskModule } from '@task/task.module';
+
 @NgModule({
 
 	declarations: [
@@ -25,7 +27,11 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 			() => initializeApp(firebaseConfig)
 
-		), provideFirestore(() => getFirestore())
+		), provideFirestore(
+
+			() => getFirestore()
+
+		), TaskModule
 
 	]
 

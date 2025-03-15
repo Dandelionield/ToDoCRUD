@@ -11,16 +11,18 @@ import { Task } from '@entities/task.entity';
 
 }) export class HomePage implements OnInit{
 
+	public tasks!: Array<Task>;
+
 	public constructor(private task: TaskService) {}
 
 	public ngOnInit(): void {
 
 		this.task.findAll().subscribe({
 
-			next: (tasks) => console.log(tasks),
+			next: (t) => this.tasks = t,
 			error: (e) => console.error('Error:', e)
 
-		});/**/
+		});
 
 	}
 

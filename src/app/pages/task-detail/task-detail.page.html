@@ -1,0 +1,81 @@
+<!-- task-detail.page.html -->
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/home"></ion-back-button>
+		</ion-buttons>
+
+		<!-- Editor de título -->
+		<div class="header-title">
+			@if (editingField === true) {
+				<ion-input
+					[value]="taskForm.get('title')?.value"
+					(ionBlur)="saveChanges(true, $event)"
+					class="title-input"
+					autofocus>
+				</ion-input>
+			} @else {
+				<ion-title (click)="startEditing(true)" class="editable-text">
+					{{ taskForm.get('title')?.value }}
+				</ion-title>
+			}
+		</div>
+
+		<ion-buttons slot="end">
+			<ion-button (click)="deleteTask()">
+				<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	@if(taskForm != null) {
+		<form [formGroup]="taskForm">
+			<!-- Editor de descripción -->
+			<ion-item lines="none">
+				@if (editingField === false) {
+					<ion-textarea
+						[value]="taskForm.get('description')?.value"
+						(ionBlur)="saveChanges(false, $event)"
+						autoGrow
+						autofocus>
+					</ion-textarea>
+				} @else {
+					<ion-label 
+						(click)="startEditing(false)"
+						class="editable-text description-label">
+						{{ taskForm.get('description')?.value || 'Click para agregar descripción' }}
+					</ion-label>
+				}
+			</ion-item>
+
+			<!-- Selector de fecha -->
+			<ion-item>
+				<ion-datetime-button datetime="taskDate"></ion-datetime-button>
+				<ion-modal [keepContentsMounted]="true">
+					<ion-datetime 
+						id="taskDate"
+						formControlName="date"
+						presentation="date"
+						locale="es-ES"
+						(ionChange)="handleDateChange($event)">
+					</ion-datetime>
+				</ion-modal>
+				<ion-label class="date-display">
+					{{ taskForm.get('date')?.value | date:'mediumDate' }}
+				</ion-label>
+			</ion-item>
+
+			<!-- Toggle estado -->
+			<ion-item>
+				<ion-toggle 
+					formControlName="done"
+					labelPlacement="end">
+					Completada
+				</ion-toggle>
+			</ion-item>
+
+		</form>
+	}
+</ion-content>

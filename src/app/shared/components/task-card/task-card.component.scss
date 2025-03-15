@@ -1,0 +1,55 @@
+.strikethrough{
+
+	text-decoration: line-through;
+	opacity: 0.7;
+
+}
+
+.task-card{
+
+	cursor: pointer;
+	transition: transform 0.2s ease;
+
+	margin: 8px;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	background: var(--ion-color-light-tint);
+
+	.title{
+
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--ion-color-dark);
+		margin-bottom: 4px;
+
+	}
+
+	.content{
+
+		padding-top: 0;
+		
+		.description{
+
+			margin: 0;
+			color: var(--ion-color-medium);
+			font-size: 0.95rem;
+			line-height: 1.4;
+			white-space: pre-wrap;
+
+		}
+
+	}
+
+	&:active{
+
+		transform: scale(0.98);
+
+	}
+	
+	&.done{
+
+		background: var(--ion-color-light-shade);
+
+	}
+
+}

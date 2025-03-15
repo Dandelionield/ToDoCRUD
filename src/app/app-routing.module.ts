@@ -13,7 +13,13 @@ const routes: Routes = [
 		redirectTo: 'home',
 		pathMatch: 'full'
 
+	},{
+
+		path: 'task/:id',
+		loadChildren: () => import('./pages/task-detail/task-detail.module').then( m => m.TaskDetailPageModule)
+
 	},
+
 
 ];
 
