@@ -1,7 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 import { firebaseConfig } from './firebase/firebase.config';
+
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
 
@@ -11,17 +13,19 @@ import { firebaseConfig } from './firebase/firebase.config';
 
 	], imports: [
 
-		AngularFireModule.initializeApp(firebaseConfig),
-		AngularFirestoreModule.enablePersistence()
+		
 
 	], exports: [
 
-		AngularFireModule,
-		AngularFirestoreModule
+		
 
 	], providers: [
 
-		
+		provideFirebaseApp(
+
+			() => initializeApp(firebaseConfig)
+
+		), provideFirestore(() => getFirestore())
 
 	]
 

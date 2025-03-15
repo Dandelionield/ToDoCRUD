@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '@task/services/task/task.service';
+import { Task } from '@entities/task.entity';
 
 @Component({
 
@@ -14,7 +15,12 @@ import { TaskService } from '@task/services/task/task.service';
 
 	public ngOnInit(): void {
 
-		console.log(this.task.findAll());
+		this.task.findAll().subscribe({
+
+			next: (tasks) => console.log(tasks),
+			error: (e) => console.error('Error:', e)
+
+		});/**/
 
 	}
 

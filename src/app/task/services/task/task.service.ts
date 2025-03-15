@@ -1,57 +1,68 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { IStatement } from '@interfaces/statement/statement.interface';
 import { IQuery } from '@interfaces/query/query.interface';
 import { Task } from '@entities/task.entity';
 import { environment } from '@environment/environment';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+
+import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, docData, doc } from '@angular/fire/firestore';
 
 @Injectable({
 
 	providedIn: 'root'
 
-}) export class TaskService implements IStatement<Task, string>, IQuery<Task, string>{
+}) export class TaskService{// implements IStatement<Task, string>, IQuery<Task, string>{
 
 	private readonly collectionName = environment.firebase.collections.task.name;
 
-	public constructor(private firestore: AngularFirestore) {}
+	public constructor(private firestore: Firestore) {}
 
 	public find(key: string): Observable<Task | undefined> {
 
-		return this.firestore.collection<Task>(this.collectionName).doc(key).valueChanges({
+		return docData(
 
-			idField: 'id' 
+			doc(this.firestore, `${this.collectionName}/${key}`),{
 
-		});
+				idField: 'id' 
+
+			}
+
+		) as Observable<Task>;
 
 	}
 
 	public findAll(): Observable<Array<Task>> {
 
-		return this.firestore.collection<Task>(this.collectionName).valueChanges({
+		return collectionData(collection(this.firestore, this.collectionName), {
 
-			idField: 'id' 
+			idField: 'id'
 
-		});
+		}) as Observable<Array<Task>>;
 
 	}
-
+ 
 	public async insert(entity: Task): Promise<string> {
 
-		return await this.firestore.collection<Task>(this.collectionName).add(entity).then(docRef => docRef.id);
+		const doc = await addDoc(
+
+			collection(this.firestore, this.collectionName),
+			entity
+
+		);
+
+		return doc.id;
 
 	}
 
 	public async update(key: string, entity: Partial<Task>): Promise<boolean> {
 
-		try {
+		try{
 
-			await this.firestore.doc<Task>(`${this.collectionName}/${key}`).update(entity);
+			await updateDoc(doc(this.firestore, `${this.collectionName}/${key}`), entity);
 
 			return true;
 
-		} catch (error){
+		}catch (error){
 
 			console.error('Error updating task:', error);
 			return false;
@@ -62,12 +73,18 @@ import { catchError, map } from 'rxjs/operators';
 
 	public async delete(key: string): Promise<boolean> {
 
-		try {
+		try{
 
-			await this.firestore.doc<Task>(`${this.collectionName}/${key}`).delete();
+			await deleteDoc(doc(
+
+				this.firestore,
+				`${this.collectionName}/${key}`
+
+			));
+
 			return true;
 
-		} catch (error) {
+		}catch (error){
 
 			console.error('Error deleting task:', error);
 			return false;
