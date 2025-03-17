@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { TaskService } from '@task/services/task/task.service';
 import { Task } from '@entities/task.entity';
+import { Timestamp } from '@angular/fire/firestore';
+import { formatDate } from '@angular/common';
 
 @Component({
 
@@ -25,7 +27,7 @@ import { Task } from '@entities/task.entity';
 
 			title: ['', [Validators.required, Validators.maxLength(50)]],
 			description: ['', Validators.maxLength(200)],
-			date: [new Date(), Validators.required],
+			date: [new Date().toISOString(), Validators.required],
 			done: [false]
 
 		});
@@ -42,14 +44,18 @@ import { Task } from '@entities/task.entity';
 
 				this.task = t as Task;
 
-				this.taskForm.patchValue({
+				if (this.task.id) {
 
-					...this.task,
-					date: this.task.date.toDate()
+					this.taskForm.patchValue({
 
-				});
+						...this.task,
+						date: this.task.date.toDate().toISOString()
 
-				this.setupAutoSave();/**/
+					});
+
+					this.setupAutoSave();
+
+				}
 
 			}, error: (e) => console.error('Error:', e)
 
@@ -63,17 +69,24 @@ import { Task } from '@entities/task.entity';
 
 	}
 
+	get formattedDate(): string {
+
+		return formatDate(
+
+			this.taskForm.get('date')?.value, 
+			'dd/MM/yyyy', 
+			'es-ES'
+
+		);
+	}/**/
+
 	public saveChanges(field: boolean, event: any): void {
 
 		this.editingField = null;
 		const value = event.target?.value;
 		this.taskForm.get(field ? 'title' : 'description')?.setValue(value);
 
-		if (this.taskForm.valid && this.task.id){
-
-			this.store.update(this.task.id, this.taskForm.value).catch(console.error);
-
-		}
+		this.saveTask();
 
 	}
 
@@ -84,20 +97,26 @@ import { Task } from '@entities/task.entity';
 			debounceTime(800),
 			takeUntil(this.destroy$)
 
-		).subscribe(() => {
+		).subscribe(() => this.saveTask());
 
-			if (this.taskForm.valid && this.task.id) {
+	}
 
-				this.store.update(this.task.id, {
+	private saveTask(): void {
 
-					...this.taskForm.value,
-					date: new Date(this.taskForm.value.date)
+		if (this.taskForm.valid && this.task.id){
 
-				}).catch(console.error);
+			this.store.update(this.task.id, {
 
-			}
+				...this.taskForm.value,
+				date: Timestamp.fromDate(new Date(
 
-		});
+					this.taskForm.get('date')?.value
+
+				))
+
+			}).catch(console.error);
+
+		}
 
 	}
 

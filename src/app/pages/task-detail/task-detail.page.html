@@ -50,24 +50,21 @@
 				}
 			</ion-item>
 
-			<!-- Selector de fecha -->
 			<ion-item>
-				<ion-datetime-button datetime="taskDate"></ion-datetime-button>
-				<ion-modal [keepContentsMounted]="true">
-					<ion-datetime 
-						id="taskDate"
-						formControlName="date"
-						presentation="date"
-						locale="es-ES"
-						(ionChange)="handleDateChange($event)">
-					</ion-datetime>
-				</ion-modal>
-				<ion-label class="date-display">
-					{{ taskForm.get('date')?.value | date:'mediumDate' }}
-				</ion-label>
-			</ion-item>
 
-			<!-- Toggle estado -->
+				<ion-datetime 
+					id="taskDate"
+					formControlName="date"
+					presentation="date"
+					locale="es-ES"
+					showDefaultButtons
+					
+					doneText="Accept"
+					cancelText="Cancel">
+					<span slot="title">Selecciona una fecha</span>
+				</ion-datetime>
+
+			</ion-item> 
 			<ion-item>
 				<ion-toggle 
 					formControlName="done"
@@ -75,6 +72,18 @@
 					Completada
 				</ion-toggle>
 			</ion-item>
+
+		@if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+			<ion-note color="danger" class="validation-error">
+				El título es requerido (máximo 50 caracteres)
+			</ion-note>
+		}
+
+		@if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+			<ion-note color="danger" class="validation-error">
+				El título es requerido (máximo 50 caracteres)
+			</ion-note>
+		}
 
 		</form>
 	}

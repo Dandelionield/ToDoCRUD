@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '@task/services/task/task.service';
 import { Task } from '@entities/task.entity';
+import { Router } from '@angular/router';
 
 @Component({
 
@@ -13,7 +14,7 @@ import { Task } from '@entities/task.entity';
 
 	public tasks!: Array<Task>;
 
-	public constructor(private task: TaskService) {}
+	public constructor(private task: TaskService, private router: Router) {}
 
 	public ngOnInit(): void {
 
@@ -23,6 +24,12 @@ import { Task } from '@entities/task.entity';
 			error: (e) => console.error('Error:', e)
 
 		});
+
+	}
+
+	public navigateToCreate(): void {
+
+		this.router.navigate(['/create']);
 
 	}
 

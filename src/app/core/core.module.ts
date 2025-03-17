@@ -15,7 +15,7 @@ import { TaskModule } from '@task/task.module';
 
 	], imports: [
 
-		
+		TaskModule
 
 	], exports: [
 
@@ -31,7 +31,7 @@ import { TaskModule } from '@task/task.module';
 
 			() => getFirestore()
 
-		), TaskModule
+		),
 
 	]
 
