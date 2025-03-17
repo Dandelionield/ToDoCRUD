@@ -41,7 +41,7 @@ import { TaskModule } from '@task/task.module';
 
 		if (parentModule){
 
-			throw new Error('CoreModule ya está cargado. Importar solo en AppModule');
+			throw new Error('CoreModule already rendered. Import it only at AppModule');
 
 		}
 

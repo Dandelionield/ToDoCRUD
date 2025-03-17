@@ -1,67 +1,73 @@
-<!-- create-task.page.html -->
 <ion-header>
+
 	<ion-toolbar>
+
 		<ion-buttons slot="start">
+
 			<ion-button (click)="cancel()">
 				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
 			</ion-button>
+
 		</ion-buttons>
 		
-		<ion-title>Nueva Tarea</ion-title>
+		<ion-title>New Task</ion-title>
 		
 		<ion-buttons slot="end">
+
 			<ion-button (click)="insert()" [disabled]="!taskForm.valid">
 				<ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
 			</ion-button>
+
 		</ion-buttons>
+
 	</ion-toolbar>
+
 </ion-header>
 
 <ion-content>
 
 	<form [formGroup]="taskForm">
-		<!-- Campo Título -->
+
 		<ion-item>
-			<ion-input
-				formControlName="title"
-				placeholder="Título de la tarea"
-				required>
-			</ion-input>
+
+			<ion-input formControlName="title" placeholder="Task Title" required></ion-input>
+
 		</ion-item>
 
-		<!-- Campo Descripción -->
 		<ion-item>
-			<ion-textarea
-				formControlName="description"
-				placeholder="Descripción (opcional)"
-				autoGrow
-				rows="4">
-			</ion-textarea>
+
+			<ion-textarea formControlName="description" placeholder="Description (Optional)" autoGrow rows="4"></ion-textarea>
+
 		</ion-item>
 
-		<!-- Selector de Fecha -->
 		<ion-item>
-			<ion-label position="stacked">Fecha límite</ion-label>
+
 			<ion-datetime-button datetime="taskDate"></ion-datetime-button>
-				
-				<ion-datetime 
-					id="taskDate"
-					formControlName="date"
-					presentation="date"
-					locale="es-ES"
-					showDefaultButtons
-					doneText="Accept"
-					cancelText="Cancel">
-					<span slot="title">Selecciona una fecha</span>
-				</ion-datetime>
+	
+			<ion-datetime id="taskDate" formControlName="date" presentation="date" locale="es-ES" showDefaultButtons doneText="Accept" cancelText="Cancel">
+
+				<span slot="title">Select a Date</span>
+
+			</ion-datetime>
 
 		</ion-item>
 
-		<!-- Validaciones -->
 		@if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+
 			<ion-note color="danger" class="validation-error">
-				El título es requerido (máximo 50 caracteres)
+				Tittle is required (50 characters max)
 			</ion-note>
+
 		}
+
+		@if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+
+			<ion-note color="danger" class="validation-error">
+				Description is required (200 characters max)
+			</ion-note>
+
+		}
+
 	</form>
+
 </ion-content>

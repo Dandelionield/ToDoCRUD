@@ -14,11 +14,10 @@ import { formatDate } from '@angular/common';
 	styleUrls: ['./task-detail.page.scss'],
 	standalone: false
 
-}) export class TaskDetailPage implements OnInit, OnDestroy {
+}) export class TaskDetailPage implements OnInit{
 
 	public task!: Task;
 	public taskForm!: FormGroup;
-	private destroy$ = new Subject<void>();
 	public editingField!: boolean | null;
 
 	public constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private store: TaskService) {
@@ -38,28 +37,30 @@ import { formatDate } from '@angular/common';
 
 		const id: string = this.route.snapshot.paramMap.get('id') as string;
 
-		this.store.find(id).subscribe({
+		if (id){
 
-			next: (t) => {
+			this.store.find(id).subscribe({
 
-				this.task = t as Task;
+				next: (t) => {
 
-				if (this.task.id) {
+					if (this.task==undefined) {
 
-					this.taskForm.patchValue({
+						this.task = t as Task;
 
-						...this.task,
-						date: this.task.date.toDate().toISOString()
+						this.taskForm.patchValue({
 
-					});
+							...this.task,
+							date: this.task.date.toDate().toISOString()
 
-					this.setupAutoSave();
+						});
 
-				}
+					}
 
-			}, error: (e) => console.error('Error:', e)
+				}, error: (e) => console.error('Error:', e)
 
-		});
+			});
+
+		}
 
 	}
 
@@ -78,7 +79,8 @@ import { formatDate } from '@angular/common';
 			'es-ES'
 
 		);
-	}/**/
+
+	}
 
 	public saveChanges(field: boolean, event: any): void {
 
@@ -90,18 +92,7 @@ import { formatDate } from '@angular/common';
 
 	}
 
-	private setupAutoSave(): void {
-
-		this.taskForm.valueChanges.pipe(
-
-			debounceTime(800),
-			takeUntil(this.destroy$)
-
-		).subscribe(() => this.saveTask());
-
-	}
-
-	private saveTask(): void {
+	public saveTask(): void {
 
 		if (this.taskForm.valid && this.task.id){
 
@@ -114,19 +105,13 @@ import { formatDate } from '@angular/common';
 
 				))
 
+			}).then((t) => {
+
+				console.log(t);
+
 			}).catch(console.error);
 
 		}
-
-	}
-
-	public handleDateChange(event: any): void {
-
-		this.taskForm.patchValue({
-
-			date: new Date(event.detail.value).toISOString()
-
-		});
 
 	}
 
@@ -145,13 +130,6 @@ import { formatDate } from '@angular/common';
 			});
 
 		}
-
-	}
-
-	public ngOnDestroy(): void {
-
-		this.destroy$.next();
-		this.destroy$.complete();
 
 	}
 

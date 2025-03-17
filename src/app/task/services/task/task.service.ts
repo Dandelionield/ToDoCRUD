@@ -11,7 +11,7 @@ import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, do
 
 	providedIn: 'root'
 
-}) export class TaskService{// implements IStatement<Task, string>, IQuery<Task, string>{
+}) export class TaskService implements IStatement<Task, string>, IQuery<Task, string>{
 
 	private readonly collectionName = environment.firebase.collections.task.name;
 
