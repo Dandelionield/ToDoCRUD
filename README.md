@@ -6,9 +6,9 @@
 
 A mobile task management application with full CRUD operations, built with Ionic and Firebase Firestore.
 
-![App Screenshot](src/assets/img/home.PNG)
-![App Screenshot](src/assets/img/create.PNG)
-![App Screenshot](src/assets/img/detail.PNG)
+![App Screenshot](src/assets/img/home.png)
+![App Screenshot](src/assets/img/create.png)
+![App Screenshot](src/assets/img/detail.png)
 
 ## Key Features ✨
 - ✅ Full CRUD Operations for Tasks

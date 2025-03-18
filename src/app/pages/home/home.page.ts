@@ -13,10 +13,26 @@ import { Router } from '@angular/router';
 }) export class HomePage implements OnInit{
 
 	public tasks!: Array<Task>;
+	public searchText: string = "";
 
-	public constructor(private task: TaskService, private router: Router) {}
+	public constructor(private task: TaskService, private router: Router) {
+
+		/*this.task.findByName('D').subscribe({
+
+			next: (t) => console.log(t),
+			error: (e) => console.error('Error:', e)
+
+		});/**/
+
+	}
 
 	public ngOnInit(): void {
+
+		this.findAll();
+
+	}
+
+	public findAll(): void {
 
 		this.task.findAll().subscribe({
 
@@ -24,6 +40,25 @@ import { Router } from '@angular/router';
 			error: (e) => console.error('Error:', e)
 
 		});
+
+	}
+
+	public findByName(): void {
+
+		if (this.searchText!==""){
+
+			this.task.findByName(this.searchText).subscribe({
+
+				next: (t) => this.tasks = t,
+				error: (e) => console.error('Error:', e)
+
+			});
+
+		}else{
+
+			this.findAll();
+
+		}
 
 	}
 

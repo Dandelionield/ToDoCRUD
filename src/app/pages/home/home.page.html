@@ -6,6 +6,8 @@
 			Home
 		</ion-title>
 
+		<ion-searchbar [(ngModel)]="searchText" (ionInput)="findByName()" placeholder="Search by name" class="custom-searchbar"></ion-searchbar>
+
 	</ion-toolbar>
 
 

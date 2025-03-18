@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TaskService } from '@task/services/task/task.service';
 import { Task } from '@entities/task.entity';
 import { Router } from '@angular/router';
 
@@ -17,13 +18,23 @@ import { Router } from '@angular/router';
 
 	}) public task!: Task;
 
-	public constructor(private router: Router) {}
+	public constructor(private router: Router, private store: TaskService) {}
 
 	public ngOnInit(): void {}
 
 	public navigateToDetail(): void {
 
 		this.router.navigate(['/task', this.task.id]);
+
+	}
+
+	public delete(): void {
+
+		if (this.task.id) {
+
+			this.store.delete(this.task.id);
+
+		}
 
 	}
 

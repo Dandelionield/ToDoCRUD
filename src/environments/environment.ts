@@ -17,7 +17,8 @@ export const environment = {
 
 			task: {
 
-				name: 'task'
+				name: 'task',
+				idField: 'id'
 
 			}
 

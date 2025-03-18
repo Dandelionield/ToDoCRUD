@@ -3,9 +3,10 @@ import { IStatement } from '@interfaces/statement/statement.interface';
 import { IQuery } from '@interfaces/query/query.interface';
 import { Task } from '@entities/task.entity';
 import { environment } from '@environment/environment';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, docData, doc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, docData, doc, getDocs, query, where } from '@angular/fire/firestore';
 
 @Injectable({
 
@@ -13,7 +14,8 @@ import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, do
 
 }) export class TaskService implements IStatement<Task, string>, IQuery<Task, string>{
 
-	private readonly collectionName = environment.firebase.collections.task.name;
+	private readonly collectionName: string = environment.firebase.collections.task.name;
+	private readonly collectionIDField: string = environment.firebase.collections.task.idField;
 
 	public constructor(private firestore: Firestore) {}
 
@@ -23,7 +25,7 @@ import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, do
 
 			doc(this.firestore, `${this.collectionName}/${key}`),{
 
-				idField: 'id' 
+				idField: this.collectionIDField as keyof Task
 
 			}
 
@@ -31,11 +33,33 @@ import { Firestore, collection, collectionData, addDoc, deleteDoc, updateDoc, do
 
 	}
 
+	public findByName(title: string): Observable<Array<Task>> {
+
+		return from(getDocs(query(collection(this.firestore, this.collectionName)))).pipe(
+
+			map(snapshot => snapshot.docs.map(
+
+				doc => ({
+
+					id: doc.id,
+					...doc.data()
+				}) as Task
+				
+			).filter(
+
+				task => task.title.toLowerCase().includes(title.toLowerCase().trim())
+
+			))
+
+		);/**/
+
+	}
+
 	public findAll(): Observable<Array<Task>> {
 
 		return collectionData(collection(this.firestore, this.collectionName), {
 
-			idField: 'id'
+			idField: this.collectionIDField as keyof Task
 
 		}) as Observable<Array<Task>>;
 

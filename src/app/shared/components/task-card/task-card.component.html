@@ -1,19 +1,35 @@
-<ion-card class="task-card" [class.done]="task.done" (click)="navigateToDetail()">
-	
+<ion-card class="task-card" [class.done]="task.done">
+
 	<ion-card-header>
 
-		<ion-card-title class="title" [class]="task.done ? 'strikethrough' : '' ">
-
+		<ion-card-title class="title" [class.strikethrough]="task.done">
 			{{ task.title }}
-
 		</ion-card-title>
 
 	</ion-card-header>
 
+
 	<ion-card-content class="content">
 
 		<p class="description">{{ task.description }}</p>
+		<p class="date">{{ task.date.toDate() | date: 'mediumDate' }}</p>
 
 	</ion-card-content>
+
+	<div class="button-container">
+
+		<ion-button class="primary" fill="clear" (click)="navigateToDetail()">
+
+			<ion-icon name="pencil"></ion-icon>
+
+		</ion-button>
+
+		<ion-button class="danger" fill="clear" (click)="delete()">
+
+			<ion-icon name="trash"></ion-icon>
+
+		</ion-button>
+		
+	</div>
 
 </ion-card>
