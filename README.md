@@ -1,4 +1,4 @@
-# Task Manager - Ionic Firebase
+# To Do List CRUD - Ionic Firebase
 
 [![Ionic](https://img.shields.io/badge/Ionic-7%2B-blue.svg)](https://ionicframework.com/)
 [![Angular](https://img.shields.io/badge/Angular-16%2B-red.svg)](https://angular.io/)
